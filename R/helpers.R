@@ -91,7 +91,12 @@ insertClause <- function(conn, table, records) {
   cols <- colnames(records)
 
   # quote
-  quoted_table <- quoteIdent(conn, table)
+  if (isPostgres(conn) == TRUE) {
+      quoted_table <- table
+    } else {
+      quoted_table <- quoteIdent(conn, table)
+    }
+    
   quoted_cols <- quoteIdent(conn, cols)
 
   cols_sql <- colsClause(quoted_cols)
